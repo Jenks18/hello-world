@@ -90,6 +90,7 @@ const golfCourses = [
 
 let map;
 let selectedCourse = golfCourses[0];
+let holePath;
 
 function initMap() {
     map = L.map('map');
@@ -97,6 +98,7 @@ function initMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     selectCourse(golfCourses[0]);
+    populateCourseList();
 }
 
 function populateCourseList() {
@@ -155,8 +157,8 @@ function setActiveTab(activeTab) {
 }
 
 function showOverview() {
-    if (holePolygon) {
-        map.removeLayer(holePolygon);
+    if (holePath) {
+        map.removeLayer(holePath);
     }
     map.eachLayer(layer => {
         if (layer instanceof L.Marker) {
@@ -164,27 +166,9 @@ function showOverview() {
         }
     });
 
-    if (selectedCourse.overview) {
-        map.setView(selectedCourse.overview, 16);
-    } else {
-        const group = new L.featureGroup();
-        selectedCourse.holes.forEach(hole => {
-            if (hole.path) {
-                const line = L.polyline(hole.path);
-                group.addLayer(line);
-            }
-        });
-        if (group.getLayers().length > 0) {
-            map.fitBounds(group.getBounds());
-        } else {
-            map.setView([selectedCourse.lat, selectedCourse.lng], 15);
-        }
-    }
-
+    map.setView(selectedCourse.overview, 16);
     document.getElementById('hole-detail').innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
 }
-
-let holePath;
 
 function showHole(holeNumber) {
     const hole = selectedCourse.holes[holeNumber - 1];
@@ -203,5 +187,3 @@ function showHole(holeNumber) {
 }
 
 initMap();
-populateCourseList();
-selectCourse(golfCourses[0]);

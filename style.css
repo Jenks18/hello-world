@@ -89,7 +89,7 @@ body {
 
 #map-overview {
     position: relative;
-    height: 400px;
+    height: 100%;
 }
 
 #map {
@@ -127,4 +127,6 @@ body {
 
 #hole-detail {
     padding: 1rem;
+    height: 200px;
+    overflow-y: auto;
 }
