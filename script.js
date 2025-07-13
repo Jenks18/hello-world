@@ -83,6 +83,7 @@ const golfCourses = [
 
 const holeTabs = document.getElementById('hole-tabs');
 const holeDetail = document.getElementById('hole-detail');
+let selectedCourse = golfCourses[0];
 
 function createTabs() {
     holeTabs.innerHTML = '';
@@ -116,9 +117,20 @@ function setActiveTab(activeTab) {
 
 function showOverview() {
     holeDetail.innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
-}
+    map.setView([-1.286389, 36.817223], 7);
 
-let selectedCourse = golfCourses[0];
+    // Clear existing markers
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+
+    golfCourses.forEach(course => {
+        const marker = L.marker([course.lat, course.lng]).addTo(map);
+        marker.bindPopup(`<b>${course.name}</b><br>${course.city}`);
+    });
+}
 
 function showHole(holeNumber) {
     const hole = selectedCourse.holes[holeNumber - 1];
@@ -133,8 +145,16 @@ function selectCourse(course) {
         <h2>${course.name}</h2>
         <p>${course.city}</p>
     `;
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
     map.setView([course.lat, course.lng], 13);
-    showOverview();
+    const marker = L.marker([course.lat, course.lng]).addTo(map);
+    marker.bindPopup(`<b>${course.name}</b><br>${course.city}`);
+    showHole(1);
+    setActiveTab(document.querySelector('#hole-tabs .tab:nth-child(2)'));
 }
 
 function populateCourseList() {
@@ -161,26 +181,3 @@ const map = L.map('map').setView([-1.286389, 36.817223], 7);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
-
-const courseList = document.getElementById('courses');
-
-golfCourses.forEach((course, index) => {
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `<span>${index + 1}.</span> ${course.name}`;
-    listItem.dataset.lat = course.lat;
-    listItem.dataset.lng = course.lng;
-    courseList.appendChild(listItem);
-
-    const marker = L.marker([course.lat, course.lng]).addTo(map);
-    marker.bindPopup(`<b>${course.name}</b><br>${course.city}`);
-
-    listItem.addEventListener('click', () => {
-        map.setView([course.lat, course.lng], 13);
-        marker.openPopup();
-
-        document.querySelectorAll('#courses li').forEach(item => {
-            item.classList.remove('active');
-        });
-        listItem.classList.add('active');
-    });
-});

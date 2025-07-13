@@ -52,23 +52,6 @@ body {
     color: #fff;
 }
 
-#sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-#sidebar li {
-    padding: 0.75rem 1rem;
-    cursor: pointer;
-    border-radius: 0.25rem;
-    transition: background-color 0.15s ease-in-out;
-}
-
-#sidebar li:hover {
-    background-color: #e9ecef;
-}
-
 #main-panel {
     flex: 1;
     display: flex;
@@ -114,4 +97,21 @@ body {
 
 #hole-detail {
     padding: 1rem;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar li {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease-in-out;
+}
+
+#sidebar li:hover {
+    background-color: #e9ecef;
 }
