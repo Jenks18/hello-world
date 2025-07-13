@@ -81,14 +81,53 @@ const golfCourses = [
     ] }
 ];
 
-const holeTabs = document.getElementById('hole-tabs');
-const holeDetail = document.getElementById('hole-detail');
+let map;
 let selectedCourse = golfCourses[0];
 
+function initMap() {
+    map = L.map('map').setView([-1.286389, 36.817223], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+}
+
+function populateCourseList() {
+    const courseList = document.getElementById('courses');
+    courseList.innerHTML = '';
+    golfCourses.forEach((course, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<span>${index + 1}.</span> ${course.name}`;
+        listItem.addEventListener('click', () => {
+            selectCourse(course);
+            document.querySelectorAll('#courses li').forEach(item => {
+                item.classList.remove('active');
+            });
+            listItem.classList.add('active');
+        });
+        courseList.appendChild(listItem);
+    });
+}
+
+function selectCourse(course) {
+    selectedCourse = course;
+    map.setView([course.lat, course.lng], 13);
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+    const marker = L.marker([course.lat, course.lng]).addTo(map);
+    marker.bindPopup(`<b>${course.name}</b><br>${course.city}`).openPopup();
+    createTabs();
+    showHole(1);
+    setActiveTab(document.querySelector('#hole-tabs .tab:nth-child(2)'));
+}
+
 function createTabs() {
+    const holeTabs = document.getElementById('hole-tabs');
     holeTabs.innerHTML = '';
     const overviewTab = document.createElement('div');
-    overviewTab.classList.add('tab', 'active');
+    overviewTab.classList.add('tab');
     overviewTab.innerText = 'Overview';
     overviewTab.addEventListener('click', () => {
         setActiveTab(overviewTab);
@@ -116,68 +155,26 @@ function setActiveTab(activeTab) {
 }
 
 function showOverview() {
-    holeDetail.innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
     map.setView([-1.286389, 36.817223], 7);
-
-    // Clear existing markers
     map.eachLayer(layer => {
         if (layer instanceof L.Marker) {
             map.removeLayer(layer);
         }
     });
-
     golfCourses.forEach(course => {
         const marker = L.marker([course.lat, course.lng]).addTo(map);
         marker.bindPopup(`<b>${course.name}</b><br>${course.city}`);
     });
+    document.getElementById('hole-detail').innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
 }
 
 function showHole(holeNumber) {
     const hole = selectedCourse.holes[holeNumber - 1];
-    holeDetail.innerHTML = `<h2>Hole ${holeNumber}</h2>
+    document.getElementById('hole-detail').innerHTML = `<h2>Hole ${holeNumber}</h2>
         <p>Par: ${hole.par}</p>
         <p>Length: ${hole.length}m</p>`;
 }
 
-function selectCourse(course) {
-    selectedCourse = course;
-    document.getElementById('course-details').innerHTML = `
-        <h2>${course.name}</h2>
-        <p>${course.city}</p>
-    `;
-    map.eachLayer(layer => {
-        if (layer instanceof L.Marker) {
-            map.removeLayer(layer);
-        }
-    });
-    map.setView([course.lat, course.lng], 13);
-    const marker = L.marker([course.lat, course.lng]).addTo(map);
-    marker.bindPopup(`<b>${course.name}</b><br>${course.city}`);
-    showHole(1);
-    setActiveTab(document.querySelector('#hole-tabs .tab:nth-child(2)'));
-}
-
-function populateCourseList() {
-    const courseList = document.createElement('ul');
-    golfCourses.forEach(course => {
-        const listItem = document.createElement('li');
-        listItem.innerText = course.name;
-        listItem.addEventListener('click', () => {
-            selectCourse(course);
-        });
-        courseList.appendChild(listItem);
-    });
-    const sidebar = document.getElementById('sidebar');
-    const layoutList = document.getElementById('layout-list');
-    sidebar.insertBefore(courseList, layoutList);
-}
-
-createTabs();
+initMap();
 populateCourseList();
-selectCourse(selectedCourse);
-
-const map = L.map('map').setView([-1.286389, 36.817223], 7);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+selectCourse(golfCourses[0]);
