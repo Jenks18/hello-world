@@ -91,7 +91,7 @@ let map;
 let selectedCourse = golfCourses[0];
 
 function initMap() {
-    map = L.map('map').setView([-1.286389, 36.817223], 7);
+    map = L.map('map').setView([golfCourses[0].lat, golfCourses[0].lng], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -117,13 +117,6 @@ function populateCourseList() {
 function selectCourse(course) {
     selectedCourse = course;
     map.setView([course.lat, course.lng], 13);
-    map.eachLayer(layer => {
-        if (layer instanceof L.Marker) {
-            map.removeLayer(layer);
-        }
-    });
-    const marker = L.marker([course.lat, course.lng]).addTo(map);
-    marker.bindPopup(`<b>${course.name}</b><br>${course.city}`).openPopup();
     createTabs();
     showHole(1);
     setActiveTab(document.querySelector('#hole-tabs .tab:nth-child(2)'));
@@ -162,6 +155,9 @@ function setActiveTab(activeTab) {
 
 function showOverview() {
     map.setView([-1.286389, 36.817223], 7);
+    if (holePolygon) {
+        map.removeLayer(holePolygon);
+    }
     map.eachLayer(layer => {
         if (layer instanceof L.Marker) {
             map.removeLayer(layer);
@@ -174,7 +170,7 @@ function showOverview() {
     document.getElementById('hole-detail').innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
 }
 
-let holePolygon;
+let holePath;
 
 function showHole(holeNumber) {
     const hole = selectedCourse.holes[holeNumber - 1];
@@ -182,13 +178,13 @@ function showHole(holeNumber) {
         <p>Par: ${hole.par}</p>
         <p>Length: ${hole.length}m</p>`;
 
-    if (holePolygon) {
-        map.removeLayer(holePolygon);
+    if (holePath) {
+        map.removeLayer(holePath);
     }
 
     if (hole.path) {
-        holePolygon = L.polygon(hole.path).addTo(map);
-        map.fitBounds(holePolygon.getBounds());
+        holePath = L.polyline(hole.path).addTo(map);
+        map.fitBounds(holePath.getBounds());
     }
 }
 
