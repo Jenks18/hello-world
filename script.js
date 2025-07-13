@@ -34,7 +34,7 @@ const golfCourses = [
         { par: 4, length: 450 }, { par: 4, length: 430 }, { par: 3, length: 210 },
         { par: 5, length: 600 }, { par: 4, length: 470 }, { par: 4, length: 440 }
     ] },
-    { name: 'Nyali Golf Club', lat: -4.04, lng: 39.71, city: 'Mombasa', holes: [
+    { name: 'Nyali Golf Club', lat: -4.04, lng: 39.71, city: 'Mombasa', overview: [-4.04244, 39.70720], holes: [
         { par: 4, length: 410, path: [[-4.0396981, 39.7087741], [-4.0391416, 39.7093320], [-4.0376259, 39.7097531]] },
         { par: 3, length: 120, path: [[-4.0379269, 39.7085917], [-4.0390131, 39.7083181], [-4.0397355, 39.7080030]] },
         { par: 5, length: 580, path: [[-4.0393663, 39.7063172], [-4.0383871, 39.7074223], [-4.0374506, 39.7082658]] },
@@ -117,10 +117,9 @@ function populateCourseList() {
 
 function selectCourse(course) {
     selectedCourse = course;
-    map.setView([course.lat, course.lng], 13);
     createTabs();
-    showHole(1);
-    setActiveTab(document.querySelector('#hole-tabs .tab:nth-child(2)'));
+    showOverview();
+    setActiveTab(document.querySelector('#hole-tabs .tab'));
 }
 
 function createTabs() {
@@ -164,8 +163,8 @@ function showOverview() {
         }
     });
 
-    if (selectedCourse.name === 'Nyali Golf Club') {
-        map.setView([-4.04244, 39.70720], 16);
+    if (selectedCourse.overview) {
+        map.setView(selectedCourse.overview, 16);
     } else {
         const group = new L.featureGroup();
         selectedCourse.holes.forEach(hole => {
