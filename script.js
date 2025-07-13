@@ -164,17 +164,21 @@ function showOverview() {
         }
     });
 
-    const group = new L.featureGroup();
-    selectedCourse.holes.forEach(hole => {
-        if (hole.path) {
-            const line = L.polyline(hole.path);
-            group.addLayer(line);
-        }
-    });
-    if (group.getLayers().length > 0) {
-        map.fitBounds(group.getBounds());
+    if (selectedCourse.name === 'Nyali Golf Club') {
+        map.setView([-4.04244, 39.70720], 16);
     } else {
-        map.setView([selectedCourse.lat, selectedCourse.lng], 15);
+        const group = new L.featureGroup();
+        selectedCourse.holes.forEach(hole => {
+            if (hole.path) {
+                const line = L.polyline(hole.path);
+                group.addLayer(line);
+            }
+        });
+        if (group.getLayers().length > 0) {
+            map.fitBounds(group.getBounds());
+        } else {
+            map.setView([selectedCourse.lat, selectedCourse.lng], 15);
+        }
     }
 
     document.getElementById('hole-detail').innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
