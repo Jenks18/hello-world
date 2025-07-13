@@ -35,9 +35,15 @@ const golfCourses = [
         { par: 5, length: 600 }, { par: 4, length: 470 }, { par: 4, length: 440 }
     ] },
     { name: 'Nyali Golf Club', lat: -4.04, lng: 39.71, city: 'Mombasa', holes: [
-        { par: 4, length: 410 }, { par: 3, length: 120 }, { par: 5, length: 580 },
-        { par: 4, length: 460 }, { par: 4, length: 440 }, { par: 3, length: 220 },
-        { par: 5, length: 610 }, { par: 4, length: 480 }, { par: 4, length: 450 }
+        { par: 4, length: 410, path: [[-4.0396981, 39.7087741], [-4.0391416, 39.7093320], [-4.0376259, 39.7097531]] },
+        { par: 3, length: 120, path: [[-4.0379269, 39.7085917], [-4.0390131, 39.7083181], [-4.0397355, 39.7080030]] },
+        { par: 5, length: 580, path: [[-4.0393663, 39.7063172], [-4.0383871, 39.7074223], [-4.0374506, 39.7082658]] },
+        { par: 4, length: 460, path: [[-4.0446585, 39.7072989], [-4.0433850, 39.7080606], [-4.0421703, 39.7097410]] },
+        { par: 4, length: 440, path: [[-4.0434867, 39.7068992], [-4.0426091, 39.7079265], [-4.0411375, 39.7090369]] },
+        { par: 3, length: 220, path: [[-4.0430559, 39.7054991], [-4.0421489, 39.7064272], [-4.0415389, 39.7075510]] },
+        { par: 5, length: 610, path: [[-4.0415977, 39.7058773], [-4.0424271, 39.7046810], [-4.0434974, 39.7037744]] },
+        { par: 4, length: 480, path: [[-4.0449823, 39.7055447], [-4.0444258, 39.7048286], [-4.0432084, 39.7046998]] },
+        { par: 4, length: 450, path: [[-4.0433288, 39.7033346], [-4.0449154, 39.7028249], [-4.0458856, 39.7031719]] }
     ] },
     { name: 'Mombasa Golf Club', lat: -4.07, lng: 39.68, city: 'Mombasa', holes: [
         { par: 4, length: 420 }, { par: 3, length: 110 }, { par: 5, length: 590 },
@@ -168,11 +174,22 @@ function showOverview() {
     document.getElementById('hole-detail').innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
 }
 
+let holePolygon;
+
 function showHole(holeNumber) {
     const hole = selectedCourse.holes[holeNumber - 1];
     document.getElementById('hole-detail').innerHTML = `<h2>Hole ${holeNumber}</h2>
         <p>Par: ${hole.par}</p>
         <p>Length: ${hole.length}m</p>`;
+
+    if (holePolygon) {
+        map.removeLayer(holePolygon);
+    }
+
+    if (hole.path) {
+        holePolygon = L.polygon(hole.path).addTo(map);
+        map.fitBounds(holePolygon.getBounds());
+    }
 }
 
 initMap();
