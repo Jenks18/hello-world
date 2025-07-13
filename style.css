@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: #f8f9fa;
+}
+
+#container {
+    display: flex;
+    height: 100vh;
+}
+
+#sidebar {
+    width: 350px;
+    background: #fff;
+    border-right: 1px solid #dee2e6;
+    display: flex;
+    flex-direction: column;
+}
+
+#course-list {
+    padding: 1rem;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#course-list h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+#courses {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#courses li {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease-in-out;
+}
+
+#courses li:hover {
+    background-color: #e9ecef;
+}
+
+#courses li.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+#courses li span {
+    margin-right: 1rem;
+    font-weight: 500;
+}
+
+#map {
+    flex: 1;
+}
