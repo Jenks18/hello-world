@@ -12,13 +12,29 @@
 <body>
     <div id="container">
         <div id="sidebar">
-            <div id="course-list">
-                <h2>Golf Courses</h2>
-                <ul id="courses">
+            <div id="course-details">
+                <h2>Sigona Golf Club</h2>
+                <p>Nairobi</p>
+            </div>
+            <div id="layout-list">
+                <h3>Layouts</h3>
+                <ul>
+                    <li class="active">Short to Short - Official</li>
+                    <li>Kinder Krusher (Long to Long)</li>
+                    <li>Short to Long</li>
                 </ul>
             </div>
         </div>
-        <div id="map"></div>
+        <div id="main-panel">
+            <div id="map-overview">
+                <div id="map"></div>
+                <button id="hide-map">Hide Map</button>
+            </div>
+            <div id="hole-tabs">
+            </div>
+            <div id="hole-detail">
+            </div>
+        </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
