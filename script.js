@@ -43,9 +43,7 @@ const golfCourses = [
         { par: 3, length: 220, path: [[-4.0430559, 39.7054991], [-4.0421489, 39.7064272], [-4.0415389, 39.7075510]] },
         { par: 5, length: 610, path: [[-4.0415977, 39.7058773], [-4.0424271, 39.7046810], [-4.0434974, 39.7037744]] },
         { par: 4, length: 480, path: [[-4.0449823, 39.7055447], [-4.0444258, 39.7048286], [-4.0432084, 39.7046998]] },
-        { par: 4, length: 450, path: [[-4.0433288, 39.7033346], [-4.0449154, 39.7028249], [-4.0458856, 39.7031719]] },
-        { par: 4, length: 450, path: [[-4.0448940, 39.7047186], [-4.0457609, 39.7053167], [-4.0459247, 39.7066303]] },
-        { par: 4, length: 450, path: [[-4.0448940, 39.7047186], [-4.0457609, 39.7053167], [-4.0459247, 39.7066303]] }
+        { par: 4, length: 450, path: [[-4.0433288, 39.7033346], [-4.0449154, 39.7028249], [-4.0458856, 39.7031719]] }
     ] },
     { name: 'Mombasa Golf Club', lat: -4.07, lng: 39.68, city: 'Mombasa', holes: [
         { par: 4, length: 420 }, { par: 3, length: 110 }, { par: 5, length: 590 },
@@ -136,7 +134,7 @@ function createTabs() {
     });
     holeTabs.appendChild(overviewTab);
 
-    for (let i = 1; i <= 9; i++) {
+    for (let i = 1; i <= selectedCourse.holes.length; i++) {
         const tab = document.createElement('div');
         tab.classList.add('tab');
         tab.innerText = `Hole ${i}`;
@@ -164,7 +162,20 @@ function showOverview() {
             map.removeLayer(layer);
         }
     });
-    map.setView([selectedCourse.lat, selectedCourse.lng], 15);
+
+    const group = new L.featureGroup();
+    selectedCourse.holes.forEach(hole => {
+        if (hole.path) {
+            const line = L.polyline(hole.path);
+            group.addLayer(line);
+        }
+    });
+    if (group.getLayers().length > 0) {
+        map.fitBounds(group.getBounds());
+    } else {
+        map.setView([selectedCourse.lat, selectedCourse.lng], 15);
+    }
+
     document.getElementById('hole-detail').innerHTML = '<h2>Overview</h2><p>This is the overview of the course.</p>';
 }
 
