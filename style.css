@@ -19,28 +19,11 @@ body {
     color: #888;
 }
 
-.tabs {
-    display: flex;
+.course-selector-container {
+    padding: 20px;
     border-bottom: 1px solid #ccc;
 }
 
-.tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    border-bottom: none;
-}
-
-.tab.active {
-    border-color: #ccc;
-    border-bottom: 1px solid #fff;
-    background-color: #fff;
-}
-
-.tab-content {
+#course-info-container {
     padding: 20px;
-}
-
-.tab-content:not(:first-of-type) {
-    display: none;
 }

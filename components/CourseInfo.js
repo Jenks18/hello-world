@@ -1,9 +1,17 @@
-function CourseInfo(courseData) {
+function CourseInfo(courseId) {
+    const course = courseData[courseId];
+
+    if (!course) {
+        const errorContainer = document.createElement('div');
+        errorContainer.textContent = 'Course not found';
+        return errorContainer;
+    }
+
     const container = document.createElement('div');
     container.className = 'course-info';
 
     const header = document.createElement('h2');
-    header.textContent = 'Course Layout: ' + courseData.layout;
+    header.textContent = 'Course Layout: ' + course.layout;
     container.appendChild(header);
 
     const table = document.createElement('table');
@@ -25,7 +33,7 @@ function CourseInfo(courseData) {
     const tbody = document.createElement('tbody');
     table.appendChild(tbody);
 
-    courseData.holes.forEach(hole => {
+    course.holes.forEach(hole => {
         const row = document.createElement('tr');
         tbody.appendChild(row);
 

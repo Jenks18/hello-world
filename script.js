@@ -7,91 +7,44 @@ document.addEventListener('DOMContentLoaded', () => {
     mapContainer.textContent = 'Map Placeholder';
     root.appendChild(mapContainer);
 
-    // Create the tabs
-    const tabsContainer = document.createElement('div');
-    tabsContainer.className = 'tabs';
-    root.appendChild(tabsContainer);
+    // Create a course selector
+    const courseSelectorContainer = document.createElement('div');
+    courseSelectorContainer.className = 'course-selector-container';
+    root.appendChild(courseSelectorContainer);
 
-    const tabContentContainer = document.createElement('div');
-    tabContentContainer.className = 'tab-content';
-    root.appendChild(tabContentContainer);
+    const courseSelectorLabel = document.createElement('label');
+    courseSelectorLabel.for = 'course-selector';
+    courseSelectorLabel.textContent = 'Select a course:';
+    courseSelectorContainer.appendChild(courseSelectorLabel);
 
-    const courseData = {
-        layout: 'Kinder Farm Park',
-        holes: [
-            { hole: 1, par: 3, distance: 250, tee: 'Short', avg: 3.2, dist: '...' },
-            { hole: 2, par: 3, distance: 300, tee: 'Short', avg: 3.4, dist: '...' },
-            { hole: 3, par: 3, distance: 200, tee: 'Short', avg: 2.9, dist: '...' },
-            { hole: 4, par: 4, distance: 450, tee: 'Short', avg: 4.5, dist: '...' },
-            { hole: 5, par: 3, distance: 275, tee: 'Short', avg: 3.1, dist: '...' },
-            { hole: 6, par: 3, distance: 225, tee: 'Short', avg: 3.0, dist: '...' },
-            { hole: 7, par: 4, distance: 400, tee: 'Short', avg: 4.2, dist: '...' },
-            { hole: 8, par: 3, distance: 260, tee: 'Short', avg: 3.3, dist: '...' },
-            { hole: 9, par: 3, distance: 280, tee: 'Short', avg: 3.2, dist: '...' },
-            { hole: 10, par: 3, distance: 250, tee: 'Short', avg: 3.2, dist: '...' },
-            { hole: 11, par: 3, distance: 300, tee: 'Short', avg: 3.4, dist: '...' },
-            { hole: 12, par: 3, distance: 200, tee: 'Short', avg: 2.9, dist: '...' },
-            { hole: 13, par: 4, distance: 450, tee: 'Short', avg: 4.5, dist: '...' },
-            { hole: 14, par: 3, distance: 275, tee: 'Short', avg: 3.1, dist: '...' },
-            { hole: 15, par: 3, distance: 225, tee: 'Short', avg: 3.0, dist: '...' },
-            { hole: 16, par: 4, distance: 400, tee: 'Short', avg: 4.2, dist: '...' },
-            { hole: 17, par: 3, distance: 260, tee: 'Short', avg: 3.3, dist: '...' },
-            { hole: 18, par: 3, distance: 280, tee: 'Short', avg: 3.2, dist: '...' },
-        ]
-    };
+    const courseSelector = document.createElement('select');
+    courseSelector.id = 'course-selector';
+    courseSelectorContainer.appendChild(courseSelector);
 
-    const tabs = [
-        { name: 'Overview', content: 'Overview Content' },
-        { name: '1-9', content: 'Content for 1-9' },
-        { name: '10-18', content: 'Content for 10-18' },
-    ];
-
-    // Create the main tabs
-    tabs.forEach((tabInfo, index) => {
-        const tab = document.createElement('div');
-        tab.className = 'tab';
-        tab.textContent = tabInfo.name;
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            tabContentContainer.innerHTML = tabInfo.content;
-        });
-        tabsContainer.appendChild(tab);
-
-        if (index === 0) {
-            tab.classList.add('active');
-            tabContentContainer.innerHTML = tabInfo.content;
-        }
+    // Populate the selector with courses from the data
+    Object.keys(courseData).forEach(courseId => {
+        const option = document.createElement('option');
+        option.value = courseId;
+        option.textContent = courseData[courseId].layout;
+        courseSelector.appendChild(option);
     });
 
-    // Create the separate course layout tab
-    const courseLayoutTab = document.createElement('div');
-    courseLayoutTab.className = 'tab';
-    courseLayoutTab.textContent = 'Course Layout';
-    tabsContainer.appendChild(courseLayoutTab);
+    // Create a container for the course info
+    const courseInfoContainer = document.createElement('div');
+    courseInfoContainer.id = 'course-info-container';
+    root.appendChild(courseInfoContainer);
 
-    const courseLayoutContent = document.createElement('div');
-    courseLayoutContent.className = 'tab-content';
-    courseLayoutContent.appendChild(CourseInfo(courseData));
-    root.appendChild(courseLayoutContent);
+    // Function to render the course info
+    function renderCourseInfo(courseId) {
+        courseInfoContainer.innerHTML = '';
+        courseInfoContainer.appendChild(CourseInfo(courseId));
+    }
 
-    courseLayoutTab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        courseLayoutTab.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
-        courseLayoutContent.style.display = 'block';
-        tabContentContainer.style.display = 'none';
+    // Render the initial course info
+    renderCourseInfo(courseSelector.value);
+
+    // Add an event listener to the selector
+    courseSelector.addEventListener('change', (e) => {
+        renderCourseInfo(e.target.value);
     });
-
-    // Add click listeners to the other tabs to hide the course layout content
-    document.querySelectorAll('.tab:not(:last-child)').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
-            tabContentContainer.style.display = 'block';
-            courseLayoutContent.style.display = 'none';
-        })
-    })
-
-    // Hide the course layout content by default
-    courseLayoutContent.style.display = 'none';
 });
