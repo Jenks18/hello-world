@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     tabContentContainer.className = 'tab-content';
     root.appendChild(tabContentContainer);
 
-    const courseData1_9 = {
-        layout: 'Kinder Farm Park (1-9)',
+    const courseData = {
+        layout: 'Kinder Farm Park',
         holes: [
             { hole: 1, par: 3, distance: 250, tee: 'Short', avg: 3.2, dist: '...' },
             { hole: 2, par: 3, distance: 300, tee: 'Short', avg: 3.4, dist: '...' },
@@ -28,43 +28,70 @@ document.addEventListener('DOMContentLoaded', () => {
             { hole: 7, par: 4, distance: 400, tee: 'Short', avg: 4.2, dist: '...' },
             { hole: 8, par: 3, distance: 260, tee: 'Short', avg: 3.3, dist: '...' },
             { hole: 9, par: 3, distance: 280, tee: 'Short', avg: 3.2, dist: '...' },
+            { hole: 10, par: 3, distance: 250, tee: 'Short', avg: 3.2, dist: '...' },
+            { hole: 11, par: 3, distance: 300, tee: 'Short', avg: 3.4, dist: '...' },
+            { hole: 12, par: 3, distance: 200, tee: 'Short', avg: 2.9, dist: '...' },
+            { hole: 13, par: 4, distance: 450, tee: 'Short', avg: 4.5, dist: '...' },
+            { hole: 14, par: 3, distance: 275, tee: 'Short', avg: 3.1, dist: '...' },
+            { hole: 15, par: 3, distance: 225, tee: 'Short', avg: 3.0, dist: '...' },
+            { hole: 16, par: 4, distance: 400, tee: 'Short', avg: 4.2, dist: '...' },
+            { hole: 17, par: 3, distance: 260, tee: 'Short', avg: 3.3, dist: '...' },
+            { hole: 18, par: 3, distance: 280, tee: 'Short', avg: 3.2, dist: '...' },
         ]
     };
 
     const tabs = [
-        { name: '1-9', content: CourseInfo(courseData1_9) },
+        { name: 'Overview', content: 'Overview Content' },
+        { name: '1-9', content: 'Content for 1-9' },
         { name: '10-18', content: 'Content for 10-18' },
-        { name: '1-18', content: 'Content for 1-18' },
     ];
 
+    // Create the main tabs
     tabs.forEach((tabInfo, index) => {
         const tab = document.createElement('div');
         tab.className = 'tab';
         tab.textContent = tabInfo.name;
         tab.addEventListener('click', () => {
-            // Remove active class from all tabs
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            // Add active class to the clicked tab
             tab.classList.add('active');
-            // Update the tab content
-            tabContentContainer.innerHTML = '';
-            if (typeof tabInfo.content === 'string') {
-                tabContentContainer.innerHTML = tabInfo.content;
-            } else {
-                tabContentContainer.appendChild(tabInfo.content);
-            }
+            tabContentContainer.innerHTML = tabInfo.content;
         });
         tabsContainer.appendChild(tab);
 
-        // Set the first tab as active by default
         if (index === 0) {
             tab.classList.add('active');
-            tabContentContainer.innerHTML = '';
-            if (typeof tabInfo.content === 'string') {
-                tabContentContainer.innerHTML = tabInfo.content;
-            } else {
-                tabContentContainer.appendChild(tabInfo.content);
-            }
+            tabContentContainer.innerHTML = tabInfo.content;
         }
     });
+
+    // Create the separate course layout tab
+    const courseLayoutTab = document.createElement('div');
+    courseLayoutTab.className = 'tab';
+    courseLayoutTab.textContent = 'Course Layout';
+    tabsContainer.appendChild(courseLayoutTab);
+
+    const courseLayoutContent = document.createElement('div');
+    courseLayoutContent.className = 'tab-content';
+    courseLayoutContent.appendChild(CourseInfo(courseData));
+    root.appendChild(courseLayoutContent);
+
+    courseLayoutTab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        courseLayoutTab.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+        courseLayoutContent.style.display = 'block';
+        tabContentContainer.style.display = 'none';
+    });
+
+    // Add click listeners to the other tabs to hide the course layout content
+    document.querySelectorAll('.tab:not(:last-child)').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+            tabContentContainer.style.display = 'block';
+            courseLayoutContent.style.display = 'none';
+        })
+    })
+
+    // Hide the course layout content by default
+    courseLayoutContent.style.display = 'none';
 });

@@ -40,3 +40,7 @@ body {
 .tab-content {
     padding: 20px;
 }
+
+.tab-content:not(:first-of-type) {
+    display: none;
+}
