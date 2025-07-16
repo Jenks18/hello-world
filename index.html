@@ -3,128 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AtoB Clone</title>
+    <title>Golf App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components/CourseInfo.css">
 </head>
 <body>
-    <div id="root">
-        <nav class="sidebar">
-            <button class="sidebar-toggle">></button>
-            <div class="sidebar-header">
-                <img src="https://i.imgur.com/sC22S2A.png" alt="User Avatar" class="user-avatar">
-                <span class="user-name">John Doe</span>
-            </div>
-            <ul class="sidebar-nav">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Cards</a></li>
-                <li><a href="#">Transactions</a></li>
-                <li><a href="#">Drivers</a></li>
-                <li><a href="#">Vehicles</a></li>
-                <li class="has-submenu">
-                    <a href="#">Payroll</a>
-                    <ul class="submenu">
-                        <li><a href="#">Payroll Overview</a></li>
-                        <li><a href="#">Payroll History</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#">Billing</a>
-                    <ul class="submenu">
-                        <li><a href="#">Statements</a></li>
-                        <li><a href="#">Payment History</a></li>
-                        <li><a href="#">Payment Methods</a></li>
-                        <li><a href="#">Manage API Tokens</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#">Telematics</a>
-                    <ul class="submenu">
-                        <li><a href="#">Connect</a></li>
-                        <li><a href="#">Vehicles / Cards</a></li>
-                        <li><a href="#">Trucks Map</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="sidebar-nav user-menu">
-                <li><a href="#">Refer & Earn</a></li>
-                <li><a href="#">Support</a></li>
-                <li><a href="#">Log Out</a></li>
-            </ul>
-        </nav>
-        <main class="main-content">
-            <div class="owes-banner">
-                You have a pending balance of $500.00. Please make a payment to avoid service interruptions.
-            </div>
-            <header class="main-header">
-                <div class="greeting">
-                    <h1>Welcome, John</h1>
-                    <p>Here's what's happening with your account today.</p>
-                </div>
-                <div class="header-actions">
-                    <button class="btn">Deposit</button>
-                    <button class="btn">Withdraw</button>
-                    <button class="btn btn-primary">Pay</button>
-                </div>
-            </header>
-            <div class="summary-cards">
-                <div class="card">
-                    <h2>Current Balance</h2>
-                    <p class="balance positive">$12,500.00</p>
-                </div>
-                <div class="card">
-                    <h2>Available Credit</h2>
-                    <p class="balance">$50,000.00</p>
-                </div>
-            </div>
-            <div class="transaction-history">
-                <h2>Transaction History</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>To/From</th>
-                            <th>Method</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Oct 20, 2023</td>
-                            <td class="positive">+$5,000.00</td>
-                            <td>Stripe</td>
-                            <td>ACH</td>
-                            <td><span class="status completed">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>Oct 19, 2023</td>
-                            <td class="negative">-$50.25</td>
-                            <td>Shell</td>
-                            <td>Card</td>
-                            <td><span class="status completed">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>Oct 18, 2023</td>
-                            <td class="negative">-$120.00</td>
-                            <td>Pilot</td>
-                            <td>Card</td>
-                            <td><span class="status pending">Pending</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="integrations">
-                <div class="card-preview">
-                    <h3>Your Card</h3>
-                    <img src="https://i.imgur.com/e7qPHvx.png" alt="AtoB Card">
-                </div>
-                <div class="mobile-preview">
-                    <h3>Mobile App</h3>
-                    <img src="https://i.imgur.com/J3a7k2p.png" alt="AtoB Mobile App">
-                </div>
-            </div>
-        </main>
-    </div>
+    <div id="root"></div>
     <script src="script.js"></script>
+    <script src="components/CourseInfo.js"></script>
 </body>
 </html>
